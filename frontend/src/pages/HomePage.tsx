@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Link } from 'react-router-dom';
 import { useWallet } from '../contexts/WalletContext';
 import { TrendingUp, Users, Shield, Zap } from 'lucide-react';

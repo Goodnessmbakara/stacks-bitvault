@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Link } from 'react-router-dom';
 import { useWallet } from '../contexts/WalletContext';
 import { Vault, Plus, Compass, Wallet } from 'lucide-react';

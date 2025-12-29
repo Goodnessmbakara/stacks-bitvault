@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { WalletProvider } from './contexts/WalletContext';
 import { TransactionProvider } from './contexts/TransactionContext';
 import { Routes, Route } from 'react-router-dom';

@@ -37,10 +37,10 @@ const CreateChallenge = () => {
         parseInt(formData.depositFrequency),
         durationBlocks,
         parseInt(formData.maxParticipants)
-      );
+      ) as any;
 
       console.log('Challenge created:', result);
-      updateTransaction(txId, 'success', result.txid);
+      updateTransaction(txId, 'success', result.txid || result.txId);
       
       // Reset form and navigate after short delay
       setTimeout(() => {

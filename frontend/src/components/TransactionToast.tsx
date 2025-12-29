@@ -1,6 +1,6 @@
-import React from 'react';
+
 import { useTransactions } from '../contexts/TransactionContext';
-import { CheckCircle, AlertCircle, Loader2, X } from 'lucide-react';
+import { CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 
 const TransactionToast = () => {
   const { transactions } = useTransactions();

@@ -5,19 +5,19 @@ import {
   PostConditionMode,
   AnchorMode,
 } from '@stacks/transactions';
-import { StacksTestnet, StacksMainnet } from '@stacks/network';
+import { STACKS_TESTNET, STACKS_MAINNET } from '@stacks/network';
 
 const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS || 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM';
 const CONTRACT_NAME = 'bitvault-core';
 
 const getNetwork = () => {
   return import.meta.env.VITE_NETWORK === 'mainnet' 
-    ? new StacksMainnet() 
-    : new StacksTestnet();
+    ? STACKS_MAINNET 
+    : STACKS_TESTNET;
 };
 
 export const createChallenge = async (
-  userSession: any,
+  _userSession: any,
   title: string,
   targetAmount: number,
   depositFrequency: number,
@@ -52,7 +52,7 @@ export const createChallenge = async (
 };
 
 export const joinChallenge = async (
-  userSession: any,
+  _userSession: any,
   challengeId: number
 ) => {
   const network = getNetwork();
@@ -77,7 +77,7 @@ export const joinChallenge = async (
 };
 
 export const makeDeposit = async (
-  userSession: any,
+  _userSession: any,
   challengeId: number,
   amount: number
 ) => {
@@ -103,7 +103,7 @@ export const makeDeposit = async (
 };
 
 export const completeChallenge = async (
-  userSession: any,
+  _userSession: any,
   challengeId: number
 ) => {
   const network = getNetwork();
@@ -128,7 +128,7 @@ export const completeChallenge = async (
 };
 
 export const claimRewards = async (
-  userSession: any,
+  _userSession: any,
   challengeId: number
 ) => {
   const network = getNetwork();
