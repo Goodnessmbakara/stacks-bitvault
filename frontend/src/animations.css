@@ -1,0 +1,162 @@
+/* Enhanced animations and micro-interactions */
+
+/* Glow effect on hover */
+.btn:hover,
+.glass-card:hover {
+  box-shadow: var(--shadow-lg), 0 0 30px rgba(102, 126, 234, 0.2);
+}
+
+/* Smooth transitions for all interactive elements */
+button,
+a,
+.glass-card,
+.input,
+.progress-fill {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Scale animation on button click */
+.btn:active {
+  transform: scale(0.98);
+}
+
+/* Floating animation for hero elements */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.hero-stat-card {
+  animation: float 3s ease-in-out infinite;
+}
+
+.hero-stat-card:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.hero-stat-card:nth-child(3) {
+  animation-delay: 1s;
+}
+
+/* Gradient text animation */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gradient-text-animated {
+  background: linear-gradient(
+    45deg,
+    #667eea 0%,
+    #764ba2 25%,
+    #f093fb 50%,
+    #667eea 75%,
+    #764ba2 100%
+  );
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 8s ease infinite;
+}
+
+/* Ripple effect */
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ripple::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-ripple:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Loading spinner */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* Slide in from bottom */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in-up {
+  animation: slideInUp 0.6s ease-out forwards;
+}
+
+/* Stagger child animations */
+.stagger-children > * {
+  opacity: 0;
+  animation: slideInUp 0.6s ease-out forwards;
+}
+
+.stagger-children > :nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.stagger-children > :nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.stagger-children > :nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.stagger-children > :nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+/* Pulse effect for important elements */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}

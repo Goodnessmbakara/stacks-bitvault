@@ -44,6 +44,8 @@
   --shadow-glow: 0 0 20px rgba(102, 126, 234, 0.3);
 }
 
+@import './animations.css';
+
 /* Reset and Base Styles */
 * {
   margin: 0;
