@@ -98,7 +98,7 @@
   (let
     (
       (challenge-id (var-get challenge-nonce))
-      (deadline (+ block-height duration-blocks))
+      (deadline (+ stacks-block-height duration-blocks))
     )
     ;; Validate inputs
     (asserts! (> target-amount u0) err-invalid-amount)
@@ -127,7 +127,7 @@
       { challenge-id: challenge-id, participant: tx-sender }
       {
         total-deposited: u0,
-        last-deposit-block: block-height,
+        last-deposit-block: stacks-block-height,
         deposit-count: u0,
         current-streak: u0,
         has-completed: false,
@@ -156,14 +156,14 @@
     (asserts! (get is-active challenge) err-challenge-ended)
     (asserts! (< (get current-participants challenge) (get max-participants challenge)) err-challenge-full)
     (asserts! (is-none existing-participant) err-already-exists)
-    (asserts! (< block-height (get deadline challenge)) err-challenge-ended)
+    (asserts! (< stacks-block-height (get deadline challenge)) err-challenge-ended)
     
     ;; Add participant
     (map-set challenge-participants
       { challenge-id: challenge-id, participant: tx-sender }
       {
         total-deposited: u0,
-        last-deposit-block: block-height,
+        last-deposit-block: stacks-block-height,
         deposit-count: u0,
         current-streak: u0,
         has-completed: false,
@@ -190,11 +190,11 @@
     (
       (challenge (unwrap! (get-challenge challenge-id) err-not-found))
       (participant (unwrap! (get-participant-info challenge-id tx-sender) err-unauthorized))
-      (blocks-since-last (- block-height (get last-deposit-block participant)))
+      (blocks-since-last (- stacks-block-height (get last-deposit-block participant)))
     )
     ;; Validate
     (asserts! (get is-active challenge) err-challenge-ended)
-    (asserts! (< block-height (get deadline challenge)) err-challenge-ended)
+    (asserts! (< stacks-block-height (get deadline challenge)) err-challenge-ended)
     (asserts! (>= amount (var-get min-deposit)) err-invalid-amount)
     
     ;; Transfer STX to contract
@@ -215,7 +215,7 @@
         { challenge-id: challenge-id, participant: tx-sender }
         (merge participant {
           total-deposited: (+ (get total-deposited participant) amount),
-          last-deposit-block: block-height,
+          last-deposit-block: stacks-block-height,
           deposit-count: (+ (get deposit-count participant) u1),
           current-streak: new-streak
         })
@@ -246,7 +246,7 @@
       (participant (unwrap! (get-participant-info challenge-id tx-sender) err-unauthorized))
     )
     ;; Validate
-    (asserts! (>= block-height (get deadline challenge)) err-too-early)
+    (asserts! (>= stacks-block-height (get deadline challenge)) err-too-early)
     (asserts! (not (get has-completed participant)) err-already-claimed)
     (asserts! (>= (get total-deposited participant) (get target-amount challenge)) err-deposit-required)
     
@@ -260,7 +260,7 @@
       )
       
       ;; Transfer funds back to participant
-      (try! (as-contract (stx-transfer? total-withdrawal tx-sender (get participant participant))))
+      (try! (as-contract (stx-transfer? total-withdrawal tx-sender tx-sender)))
       
       ;; Update participant status
       (map-set challenge-participants
@@ -296,7 +296,7 @@
       )
       
       ;; Transfer reduced amount back
-      (try! (as-contract (stx-transfer? withdrawal tx-sender (get participant participant))))
+      (try! (as-contract (stx-transfer? withdrawal tx-sender tx-sender)))
       
       ;; Add penalty to reward pool
       (map-set challenges
@@ -325,7 +325,7 @@
       (participant (unwrap! (get-participant-info challenge-id tx-sender) err-unauthorized))
     )
     ;; Validate
-    (asserts! (>= block-height (get deadline challenge)) err-too-early)
+    (asserts! (>= stacks-block-height (get deadline challenge)) err-too-early)
     (asserts! (get has-completed participant) err-unauthorized)
     (asserts! (not (get has-claimed-rewards participant)) err-already-claimed)
     (asserts! (> (get reward-pool challenge) u0) err-invalid-amount)
@@ -339,7 +339,7 @@
       )
       
       ;; Transfer rewards
-      (try! (as-contract (stx-transfer? user-share tx-sender (get participant participant))))
+      (try! (as-contract (stx-transfer? user-share tx-sender tx-sender)))
       
       ;; Mark as claimed
       (map-set challenge-participants
