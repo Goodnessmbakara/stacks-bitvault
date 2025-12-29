@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useWallet } from '../contexts/WalletContext';
+import { useTransactions } from '../contexts/TransactionContext';
 import { createChallenge } from '../lib/contractHelpers';
 import { Plus, Users, Calendar, Target } from 'lucide-react';
 
 const CreateChallenge = () => {
   const { isConnected, userSession, connect } = useWallet();
+  const { addTransaction, updateTransaction } = useTransactions();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -21,7 +23,9 @@ const CreateChallenge = () => {
     e.preventDefault();
     if (!isConnected || !userSession) return;
 
+    const txId = addTransaction('Creating Challenge', formData.title);
     setLoading(true);
+
     try {
       const durationBlocks = parseInt(formData.duration) * 144; // ~144 blocks per day
       const targetInMicroStx = parseInt(formData.targetAmount) * 1000000;
@@ -36,10 +40,16 @@ const CreateChallenge = () => {
       );
 
       console.log('Challenge created:', result);
-      navigate('/vault');
-    } catch (error) {
+      updateTransaction(txId, 'success', result.txid);
+      
+      // Reset form and navigate after short delay
+      setTimeout(() => {
+        navigate('/vault');
+      }, 2000);
+    } catch (error: any) {
       console.error('Error creating challenge:', error);
-      alert('Failed to create challenge. Please try again.');
+      updateTransaction(txId, 'error');
+      alert(`Failed to create challenge: ${error.message || 'Please try again.'}`);
     } finally {
       setLoading(false);
     }
